@@ -1,0 +1,54 @@
+# 🎮 Git Game - Docker Compose
+# Para rodar o jogo localmente
+
+services:
+  # 💾 Banco de Dados PostgreSQL
+  database:
+    build: ./db
+    container_name: gitgame-db
+    environment:
+      POSTGRES_DB: gitgame
+      POSTGRES_USER: gitgame
+      POSTGRES_PASSWORD: gitgame123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gitgame -d gitgame"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ⚡ Backend API (FastAPI)
+  backend:
+    build: ./backend
+    container_name: gitgame-api
+    environment:
+      DATABASE_URL: postgresql://gitgame:gitgame123@database:5432/gitgame
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # 🎮 Frontend (React)
+  frontend:
+    build: ./frontend
+    container_name: gitgame-app
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
