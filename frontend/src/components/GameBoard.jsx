@@ -163,7 +163,7 @@ function GameBoard({ playerName, apiUrl, onResetGame }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-        {/* Left Side - Game */}
+        {/* Main Game Area (spans 2 columns in 3-column layout) */}
         <div className="lg:col-span-2 space-y-4 md:space-y-6">
           {/* Word Display */}
           <div className="cyber-card word-card text-center">
