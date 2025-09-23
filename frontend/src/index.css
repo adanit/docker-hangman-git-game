@@ -159,7 +159,7 @@
     }
   }
   
-  /* Efeito de iluminação vertical removido */
+  /* Vertical lighting effect removed */
   .cyber-card::before {
     content: '';
     position: absolute;
