@@ -24,8 +24,8 @@ app = FastAPI(title="Git Game API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Em produção, especificar domínios
-    allow_credentials=True,
+    allow_origins=["*"],  # Permitir solicitações de qualquer origem
+    allow_credentials=False,  # Desabilitar credenciais para permitir wildcard origins
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -79,6 +79,7 @@ class GuessResponse(BaseModel):
     points: int
     message: str
     hint: str
+    correct_word: Optional[str] = None
 
 class NewGameResponse(BaseModel):
     game_id: int
@@ -271,7 +272,7 @@ def make_guess(guess: GuessRequest, db: Session = Depends(get_db)):
         
         if game.wrong_guesses >= game.max_wrong:
             game.status = "lost"
-            message = f"💀 Game Over! A palavra era: {game.word}"
+            message = "💀 Game Over!"
     
     db.commit()
     
@@ -296,7 +297,8 @@ def make_guess(guess: GuessRequest, db: Session = Depends(get_db)):
         status=game.status,
         points=game.points,
         message=message,
-        hint=basic_hint
+        hint=basic_hint,
+        correct_word=game.word if game.status == "lost" else None
     )
 
 @app.get("/leaderboard", response_model=List[LeaderboardEntry])
