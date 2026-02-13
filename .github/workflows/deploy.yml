@@ -3,7 +3,8 @@ name: Deploy Git Game no Azure
 # Quando Executar o Workflow
 on:
   push:
-    branches: [ main ] # a cada push na branch main vai ser executada a pipeline
+    branches:
+      - main
   workflow_dispatch: # Permite executar a pipeline manualmente
 
 # Variáveis Globais
