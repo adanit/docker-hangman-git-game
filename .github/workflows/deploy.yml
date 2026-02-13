@@ -3,7 +3,8 @@ name: Deploy Git Game no Azure
 # Quando Executar o Workflow
 on:
   push:
-    branches: [ main ] # a cada push na branch main vai ser executada a pipeline
+    branches:
+      - main
   workflow_dispatch: # Permite executar a pipeline manualmente
 
 # Variáveis Globais
@@ -121,3 +122,5 @@ jobs:
           echo "🔗 API: $(terraform output -raw api_url)"
           echo ""
           echo "🎉 Deploy concluído! Aguarde 2-3 minutos para ficar disponível."
+      
+      # Passo 10: Exibir Mensagem de Sucesso
