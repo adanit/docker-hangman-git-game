@@ -122,3 +122,5 @@ jobs:
           echo "🔗 API: $(terraform output -raw api_url)"
           echo ""
           echo "🎉 Deploy concluído! Aguarde 2-3 minutos para ficar disponível."
+      
+      # Passo 10: Exibir Mensagem de Sucesso
